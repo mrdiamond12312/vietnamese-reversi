@@ -25,7 +25,7 @@ export type TPositionParam = {
 };
 
 export const useChessBoard = () => {
-  const [prevBoard, setPrevBoard] = useState<number[][][]>();
+  const [prevBoard, setPrevBoard] = useState<number[][][]>([]);
   const [chessBoard, setChessBoard] = useState<number[][]>([
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 1],
@@ -207,8 +207,8 @@ export const useChessBoard = () => {
   const detectTrap = useCallback(
     (board: number[][]) => {
       if (
-        currentChess.row &&
-        currentChess.col &&
+        currentChess.row !== null &&
+        currentChess.col !== null &&
         symmetricAttackHelper[currentChess.row][currentChess.col].some(
           (symmetricPair) =>
             symmetricPair !== null &&
@@ -225,6 +225,7 @@ export const useChessBoard = () => {
         setTrap(currentChess);
         board[currentChess.row][currentChess.col] =
           TRAPPING_FLAG * -currentPlayer;
+        console.log(board);
       } else {
         setTrap({
           row: null,
@@ -267,7 +268,7 @@ export const useChessBoard = () => {
             });
           }
 
-          setPrevBoard(previous);
+          setPrevBoard((prev) => [...prev, previous]);
           return temp;
         } else return previous;
       });

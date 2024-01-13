@@ -52,7 +52,7 @@ const BoardTile: React.FC<TBoardTile> = ({
     "bg-blue-600 opacity-50 w-6 cursor-pointer":
       chessPiece === PLAYER_2 * MOVEMENT_GUIDE_FLAG,
 
-    "w-12":
+    "w-12 cursor-pointer":
       chessPiece === PLAYER_1 * TRAPPING_FLAG ||
       chessPiece === PLAYER_2 * TRAPPING_FLAG,
     hidden: chessPiece === 0,
