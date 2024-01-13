@@ -1,0 +1,45 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// GG Font API
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
+
+:root {
+  font-family: Nunito, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  .scrollbar-column::-webkit-scrollbar {
+    @apply w-1;
+    @apply h-1;
+  }
+
+  .scrollbar-column {
+    scrollbar-gutter: stable;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+    @apply h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-3 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-5 rounded-lg;
+  }
+
+  ul, ol {
+    list-style: revert;
+  }
+}
+
+@layer utilities {
+  .font-stretch {
+    font-stretch: expanded;
+  }
+}
+
