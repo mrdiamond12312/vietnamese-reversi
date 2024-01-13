@@ -167,7 +167,7 @@ export const useChessBoard = () => {
       while (isLibertyModified) {
         isLibertyModified = false;
         libertyMap.map((rowData, row) =>
-          rowData.map((data, col) => {
+          rowData.map((_, col) => {
             if (
               (board[row][col] === PLAYER_1 || board[row][col] === PLAYER_2) &&
               !libertyMap[row][col] &&
@@ -295,5 +295,6 @@ export const useChessBoard = () => {
     setCurrentPlayer,
     moveChessPiece,
     pickUpChess,
+    prevBoard,
   } as const;
 };

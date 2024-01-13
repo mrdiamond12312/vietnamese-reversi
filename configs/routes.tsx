@@ -1,11 +1,16 @@
 import { lazyRouteImport } from "@/utils/lazyRouteImport";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { path } from "@/constants/path";
+import React from "react";
+import NotFound from "@/pages/NotFound";
+
+const NavBar = React.lazy(() => import("@/layouts/Navbar"));
+const PlayChess = React.lazy(() => import("@/pages/PlayChess"));
 
 export const router = createBrowserRouter([
   {
     path: path.HOMEPAGE,
-    lazy: () => lazyRouteImport("layouts/Navbar"),
+    element: <NavBar />,
     children: [
       {
         path: path.HOMEPAGE,
@@ -13,21 +18,17 @@ export const router = createBrowserRouter([
       },
       {
         path: path.PLAY_CHESS,
-        lazy: () => lazyRouteImport("pages/PlayChess"),
+        element: <PlayChess />,
       },
-      // {
-      //   path: (path),
-      //   lazy: () => lazyRouteImport("pages/TermsOfUse"),
-      // },
     ],
   },
 
   {
     path: "*",
-    lazy: () => lazyRouteImport("pages/NotFound"),
+    element: <NotFound />,
   },
   {
     path: path.PAGE_NOT_FOUND,
-    lazy: () => lazyRouteImport("pages/NotFound"),
+    element: <NotFound />,
   },
 ]);
