@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.15.2",
     "@mui/material": "^5.15.2",
     "@reduxjs/toolkit": "^2.0.1",
+    "antd": "^5.13.0",
     "classnames": "^2.4.0",
     "dotenv": "^16.3.1",
     "husky": "^8.0.3",

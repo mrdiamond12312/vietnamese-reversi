@@ -6,9 +6,9 @@ const PlayChess: React.FC = () => {
   const { chessBoard, moveChessPiece, pickUpChess, currentPlayer } =
     useChessBoard();
   return (
-    <div className="flex flex-col h-[100vh] max-h-[calc(100vh-160px)] aspect-square m-auto">
+    <div className="flex flex-col  max-h-[calc(100vh-160px)] w-auto aspect-square m-auto">
       {chessBoard.map((row, rowIndex) => (
-        <div className="h-1/5 flex flex-row" key={`${row}`}>
+        <div className="max-w-[90vw] flex flex-row" key={rowIndex}>
           {row.map((chessPiece, col) => (
             <BoardTile
               chessPiece={chessPiece}

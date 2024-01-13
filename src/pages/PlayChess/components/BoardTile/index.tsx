@@ -3,10 +3,14 @@ import {
   MOVEMENT_GUIDE_FLAG,
   PLAYER_1,
   PLAYER_2,
+  TRAPPING_FLAG,
 } from "@/constants/board";
 import React from "react";
 import classNames from "classnames";
-import { TPosition } from "@/pages/PlayChess/hooks/useChessBoard";
+import {
+  TPosition,
+  TPositionParam,
+} from "@/pages/PlayChess/hooks/useChessBoard";
 
 export type TBoardTile = {
   row: number;
@@ -14,7 +18,7 @@ export type TBoardTile = {
   chessPiece: number;
   currentPlayer: number;
   pickUpChess: (position: TPosition) => void;
-  moveChessPiece: (position: TPosition) => void;
+  moveChessPiece: (position: TPositionParam) => void;
 };
 
 const PathRender = [
@@ -39,19 +43,20 @@ const BoardTile: React.FC<TBoardTile> = ({
   moveChessPiece,
 }) => {
   const diagonalMovement: number = (row * BOARD_SIZE + col) % 2;
-  const chessPieceClassName = classNames(
-    "rounded-full aspect-square z-10 cursor-pointer",
-    {
-      "bg-red-600 w-5": chessPiece === PLAYER_1,
-      "bg-blue-600 w-5": chessPiece === PLAYER_2,
-      "cursor-not-allowed": currentPlayer * chessPiece < 0,
-      "bg-red-600 opacity-50 w-6 ":
-        chessPiece === PLAYER_1 * MOVEMENT_GUIDE_FLAG,
-      "bg-blue-600 opacity-50 w-6 ":
-        chessPiece === PLAYER_2 * MOVEMENT_GUIDE_FLAG,
-      hidden: chessPiece === 0,
-    }
-  );
+  const chessPieceClassName = classNames("rounded-full aspect-square z-10 ", {
+    "bg-red-600 w-5 cursor-pointer": chessPiece === PLAYER_1,
+    "bg-blue-600 w-5 cursor-pointer": chessPiece === PLAYER_2,
+    "!cursor-not-allowed": currentPlayer * chessPiece < 0,
+    "bg-red-600 opacity-50 w-6 cursor-pointer":
+      chessPiece === PLAYER_1 * MOVEMENT_GUIDE_FLAG,
+    "bg-blue-600 opacity-50 w-6 cursor-pointer":
+      chessPiece === PLAYER_2 * MOVEMENT_GUIDE_FLAG,
+
+    "w-12":
+      chessPiece === PLAYER_1 * TRAPPING_FLAG ||
+      chessPiece === PLAYER_2 * TRAPPING_FLAG,
+    hidden: chessPiece === 0,
+  });
 
   return (
     <div className="flex relative justify-center items-center w-full aspect-square text-center align-middle">
@@ -71,6 +76,20 @@ const BoardTile: React.FC<TBoardTile> = ({
       {(chessPiece === PLAYER_1 * MOVEMENT_GUIDE_FLAG ||
         chessPiece === PLAYER_2 * MOVEMENT_GUIDE_FLAG) && (
         <div
+          className={chessPieceClassName}
+          onClick={() =>
+            moveChessPiece({
+              row,
+              col,
+            })
+          }
+        />
+      )}
+
+      {(chessPiece === PLAYER_1 * TRAPPING_FLAG ||
+        chessPiece === PLAYER_2 * TRAPPING_FLAG) && (
+        <img
+          src="/images/trap_icon.jpg"
           className={chessPieceClassName}
           onClick={() =>
             moveChessPiece({
