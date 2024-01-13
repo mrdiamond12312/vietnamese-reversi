@@ -1,4 +1,3 @@
-import { lazyRouteImport } from "@/utils/lazyRouteImport";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { path } from "@/constants/path";
 import React from "react";
