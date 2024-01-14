@@ -90,5 +90,3 @@ export const neighborHelper = initialBoard.map((chessRow, row) =>
       .filter((value) => value !== null)
   )
 );
-
-console.log(neighborHelper);

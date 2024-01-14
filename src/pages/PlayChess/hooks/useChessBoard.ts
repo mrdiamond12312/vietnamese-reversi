@@ -13,6 +13,7 @@ import {
 import { twoDimensionArraySum } from "@/utils/arrayCalc";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { notification } from "antd";
+import { useFetchAIMove } from "@/services/chess-bot/services";
 
 export type TPosition = {
   row: number | null;
@@ -178,7 +179,7 @@ export const useChessBoard = () => {
                   board[neighbor.row][neighbor.col] === board[row][col]
                 ) {
                   return true;
-                } else return false;
+                } else return libertyMap[row][col];
               })
             ) {
               isLibertyModified = true;
@@ -225,7 +226,6 @@ export const useChessBoard = () => {
         setTrap(currentChess);
         board[currentChess.row][currentChess.col] =
           TRAPPING_FLAG * -currentPlayer;
-        console.log(board);
       } else {
         setTrap({
           row: null,
@@ -237,7 +237,8 @@ export const useChessBoard = () => {
   );
 
   const moveChessPiece = useCallback(
-    (position: TPositionParam) => {
+    (position: TPositionParam, fromPosition?: TPositionParam) => {
+      console.log(position, fromPosition);
       if (
         trap.row !== null &&
         trap.col !== null &&
@@ -250,10 +251,17 @@ export const useChessBoard = () => {
         });
         return;
       }
+
+      setPrevBoard((prev) => [...prev, chessBoard]);
       setChessBoard((previous) => {
-        const temp = previous;
-        if (currentChess.row !== null && currentChess.col !== null) {
-          temp[currentChess.row][currentChess.col] = 0;
+        const temp = previous.slice();
+        if (
+          (fromPosition?.row !== null && fromPosition?.col !== null) ||
+          (currentChess.row !== null && currentChess.col !== null)
+        ) {
+          temp[fromPosition?.row ?? currentChess.row!][
+            fromPosition?.col ?? currentChess.col!
+          ] = 0;
           temp[position.row][position.col] = currentPlayer;
           symmetricAttack(temp, position);
           libertyAttack(temp);
@@ -268,7 +276,6 @@ export const useChessBoard = () => {
             });
           }
 
-          setPrevBoard((prev) => [...prev, previous]);
           return temp;
         } else return previous;
       });
@@ -281,10 +288,30 @@ export const useChessBoard = () => {
     [currentChess]
   );
 
+  const { isLoading, data } = useFetchAIMove(
+    prevBoard[prevBoard.length - 1] ?? [
+      [1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1],
+      [1, 0, 0, 0, -1],
+      [-1, 0, 0, 0, -1],
+      [-1, -1, -1, -1, -1],
+    ],
+    chessBoard,
+    currentPlayer
+  );
+
+  useEffect(() => {
+    if (data) {
+      // setCurrentChess(data.move.from);
+      moveChessPiece(data.move.to, data.move.from);
+    }
+  }, [data]);
+
   useEffect(() => {
     clearMoveGuides();
+
     addMoveGuides();
-  }, [currentChess]);
+  }, [currentChess, data]);
 
   return {
     chessBoard,
@@ -296,5 +323,6 @@ export const useChessBoard = () => {
     moveChessPiece,
     pickUpChess,
     prevBoard,
+    botIsThinking: isLoading,
   } as const;
 };

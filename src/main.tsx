@@ -9,12 +9,18 @@ import store from "@/storage/store";
 
 import "@/global.less";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <React.StrictMode>
-      <StyledEngineProvider injectFirst>
-        <RouterProvider router={router} />
-      </StyledEngineProvider>
+      <QueryClientProvider client={queryClient}>
+        <StyledEngineProvider injectFirst>
+          <RouterProvider router={router} />
+        </StyledEngineProvider>
+      </QueryClientProvider>
     </React.StrictMode>
   </Provider>
 );
